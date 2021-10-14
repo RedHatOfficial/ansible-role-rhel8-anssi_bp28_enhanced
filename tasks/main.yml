@@ -1118,7 +1118,6 @@
   tags:
   - CCE-80666-1
   - CJIS-5.6.2.1.1
-  - DISA-STIG-RHEL-08-020220
   - NIST-800-171-3.5.8
   - NIST-800-53-IA-5(1)(e)
   - NIST-800-53-IA-5(f)
@@ -1153,7 +1152,6 @@
   tags:
   - CCE-80666-1
   - CJIS-5.6.2.1.1
-  - DISA-STIG-RHEL-08-020220
   - NIST-800-171-3.5.8
   - NIST-800-53-IA-5(1)(e)
   - NIST-800-53-IA-5(f)
@@ -1181,7 +1179,6 @@
   tags:
   - CCE-80666-1
   - CJIS-5.6.2.1.1
-  - DISA-STIG-RHEL-08-020220
   - NIST-800-171-3.5.8
   - NIST-800-53-IA-5(1)(e)
   - NIST-800-53-IA-5(f)
@@ -2408,7 +2405,7 @@
     manager: auto
   tags:
   - CCE-83386-3
-  - DISA-STIG-RHEL-08-010130
+  - DISA-STIG-RHEL-08-010131
   - accounts_password_pam_unix_rounds_system_auth
   - configure_strategy
   - low_complexity
@@ -2441,7 +2438,7 @@
   - '"pam" in ansible_facts.packages'
   tags:
   - CCE-83386-3
-  - DISA-STIG-RHEL-08-010130
+  - DISA-STIG-RHEL-08-010131
   - accounts_password_pam_unix_rounds_system_auth
   - configure_strategy
   - low_complexity
@@ -2710,23 +2707,12 @@
   - restrict_strategy | bool
   - unknown_severity | bool
 
-- name: Search /etc/audit/rules.d for audit rule entries
-  find:
-    paths: /etc/audit/rules.d
-    recurse: false
-    contains: ^.*path=/usr/bin/sudo.*$
-    patterns: '*.rules'
-  register: find_sudo
-  when:
-  - audit_rules_privileged_commands_sudo | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+- name: Gather the package facts
+  package_facts:
+    manager: auto
   tags:
   - CCE-80737-0
+  - DISA-STIG-RHEL-08-030550
   - NIST-800-171-3.1.7
   - NIST-800-53-AC-6(9)
   - NIST-800-53-AU-12(c)
@@ -2738,11 +2724,6 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
-
-- name: Use /etc/audit/rules.d/privileged.rules as the recipient for the rule
-  set_fact:
-    all_files:
-    - /etc/audit/rules.d/privileged.rules
   when:
   - audit_rules_privileged_commands_sudo | bool
   - low_complexity | bool
@@ -2750,26 +2731,96 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - find_sudo.matched is defined and find_sudo.matched == 0
-  tags:
-  - CCE-80737-0
-  - NIST-800-171-3.1.7
-  - NIST-800-53-AC-6(9)
-  - NIST-800-53-AU-12(c)
-  - NIST-800-53-AU-2(d)
-  - NIST-800-53-CM-6(a)
-  - audit_rules_privileged_commands_sudo
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
 
-- name: Use matched file as the recipient for the rule
-  set_fact:
-    all_files:
-    - '{{ find_sudo.files | map(attribute=''path'') | list | first }}'
+- name: Perform remediation of Audit rules for /usr/bin/sudo
+  block:
+  - name: Declare list of syscalls
+    set_fact:
+      syscalls: []
+      syscall_grouping: []
+  - name: Check existence of  in /etc/audit/rules.d/
+    find:
+      paths: /etc/audit/rules.d
+      contains: -a always,exit(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)* -F path=/usr/bin/sudo -F perm=x -F auid>=1000
+        -F auid!=unset (-k\s+|-F\s+key=)\S+\s*$
+      patterns: '*.rules'
+    register: find_command
+    loop: '{{ (syscall_grouping + syscalls) | unique }}'
+  - name: Reset syscalls found per file
+    set_fact:
+      syscalls_per_file: {}
+      found_paths_dict: {}
+  - name: Declare syscalls found per file
+    set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path,
+      []) } ) }}"
+    loop: '{{ find_command.results | selectattr(''matched'') | list }}'
+  - name: Declare files where syscalls were found
+    set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
+  - name: Count occurrences of syscalls in paths
+    set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
+    loop: '{{ find_command.results | map(attribute=''files'') | flatten | map(attribute=''path'') | list }}'
+  - name: Get path with most syscalls
+    set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
+    when: found_paths | length >= 1
+  - name: No file with syscall found, set path to /etc/audit/rules.d/privileged.rules
+    set_fact: audit_file="/etc/audit/rules.d/privileged.rules"
+    when: found_paths | length == 0
+  - name: Declare found syscalls
+    set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  - name: Declare missing syscalls
+    set_fact: missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
+  - name: Replace the audit rule in {{ audit_file }}
+    lineinfile:
+      path: '{{ audit_file }}'
+      regexp: (-a always,exit)(?=.*(?:(?:-S |,)(?:{{ syscalls_per_file[audit_file] | join("|") }}))\b)((?:( -S |,)\w+)+)(
+        -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset (?:-k |-F key=)\w+)
+      line: \1\2\3{{ missing_syscalls | join("\3") }}\4
+      backrefs: true
+      state: present
+    when: syscalls_found | length > 0 and missing_syscalls | length > 0
+  - name: Add the audit rule to {{ audit_file }}
+    lineinfile:
+      path: '{{ audit_file }}'
+      line: -a always,exit{{ syscalls | join(',') }} -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+      create: true
+      mode: o-rwx
+      state: present
+    when: syscalls_found | length == 0
+  - name: Declare list of syscalls
+    set_fact:
+      syscalls: []
+      syscall_grouping: []
+  - name: Check existence of  in /etc/audit/audit.rules
+    find:
+      paths: /etc/audit
+      contains: -a always,exit(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)* -F path=/usr/bin/sudo -F perm=x -F auid>=1000
+        -F auid!=unset (-k\s+|-F\s+key=)\S+\s*$
+      patterns: audit.rules
+    register: find_command
+    loop: '{{ (syscall_grouping + syscalls) | unique }}'
+  - name: Set path to /etc/audit/audit.rules
+    set_fact: audit_file="/etc/audit/audit.rules"
+  - name: Declare found syscalls
+    set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  - name: Declare missing syscalls
+    set_fact: missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
+  - name: Replace the audit rule in {{ audit_file }}
+    lineinfile:
+      path: '{{ audit_file }}'
+      regexp: (-a always,exit)(?=.*(?:(?:-S |,)(?:{{ syscalls_found | join("|") }}))\b)((?:( -S |,)\w+)+)( -F path=/usr/bin/sudo
+        -F perm=x -F auid>=1000 -F auid!=unset (?:-k |-F key=)\w+)
+      line: \1\2\3{{ missing_syscalls | join("\3") }}\4
+      backrefs: true
+      state: present
+    when: syscalls_found | length > 0 and missing_syscalls | length > 0
+  - name: Add the audit rule to {{ audit_file }}
+    lineinfile:
+      path: '{{ audit_file }}'
+      line: -a always,exit{{ syscalls | join(',') }} -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+      create: true
+      mode: o-rwx
+      state: present
+    when: syscalls_found | length == 0
   when:
   - audit_rules_privileged_commands_sudo | bool
   - low_complexity | bool
@@ -2777,64 +2828,10 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - find_sudo.matched is defined and find_sudo.matched > 0
+  - '"audit" in ansible_facts.packages'
   tags:
   - CCE-80737-0
-  - NIST-800-171-3.1.7
-  - NIST-800-53-AC-6(9)
-  - NIST-800-53-AU-12(c)
-  - NIST-800-53-AU-2(d)
-  - NIST-800-53-CM-6(a)
-  - audit_rules_privileged_commands_sudo
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-
-- name: Inserts/replaces the sudo rule in rules.d
-  lineinfile:
-    path: '{{ all_files[0] }}'
-    line: -a always,exit -F path=/usr/bin/sudo -F auid>=1000 -F auid!=unset -F key=privileged
-    create: true
-  when:
-  - audit_rules_privileged_commands_sudo | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80737-0
-  - NIST-800-171-3.1.7
-  - NIST-800-53-AC-6(9)
-  - NIST-800-53-AU-12(c)
-  - NIST-800-53-AU-2(d)
-  - NIST-800-53-CM-6(a)
-  - audit_rules_privileged_commands_sudo
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-
-- name: Inserts/replaces the sudo rule in audit.rules
-  lineinfile:
-    path: /etc/audit/audit.rules
-    line: -a always,exit -F path=/usr/bin/sudo -F auid>=1000 -F auid!=unset -F key=privileged
-    create: true
-  when:
-  - audit_rules_privileged_commands_sudo | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80737-0
+  - DISA-STIG-RHEL-08-030550
   - NIST-800-171-3.1.7
   - NIST-800-53-AC-6(9)
   - NIST-800-53-AU-12(c)
@@ -3442,7 +3439,7 @@
   tags:
   - CCE-80917-8
   - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-08-040280
+  - DISA-STIG-RHEL-08-040279
   - NIST-800-171-3.1.20
   - NIST-800-53-CM-6(a)
   - NIST-800-53-CM-7(a)
@@ -3471,7 +3468,7 @@
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   tags:
   - CCE-81011-9
-  - DISA-STIG-RHEL-08-040240
+  - DISA-STIG-RHEL-08-040239
   - NIST-800-171-3.1.20
   - NIST-800-53-CM-6(a)
   - NIST-800-53-CM-7(a)
@@ -3586,7 +3583,7 @@
   tags:
   - CCE-80919-4
   - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-08-040210
+  - DISA-STIG-RHEL-08-040209
   - NIST-800-171-3.1.20
   - NIST-800-53-CM-6(a)
   - NIST-800-53-CM-7(a)
@@ -3616,7 +3613,7 @@
   tags:
   - CCE-80920-2
   - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-08-040250
+  - DISA-STIG-RHEL-08-040249
   - NIST-800-171-3.1.20
   - NIST-800-53-CM-7(a)
   - NIST-800-53-CM-7(b)
@@ -6921,6 +6918,7 @@
   - restrict_strategy | bool
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   - '"postfix" in ansible_facts.packages'
+  - '"postfix" in ansible_facts.packages'
   tags:
   - CCE-82174-4
   - NIST-800-53-CM-6(a)
@@ -6959,6 +6957,9 @@
     manager: auto
   tags:
   - CCE-82873-1
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.3
   - chronyd_specify_remote_server
   - configure_strategy
   - low_complexity
@@ -6990,6 +6991,9 @@
   - '"chrony" in ansible_facts.packages'
   tags:
   - CCE-82873-1
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.3
   - chronyd_specify_remote_server
   - configure_strategy
   - low_complexity
@@ -7016,6 +7020,9 @@
   - chrony_servers.matched == 0
   tags:
   - CCE-82873-1
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.3
   - chronyd_specify_remote_server
   - configure_strategy
   - low_complexity
@@ -7414,7 +7421,7 @@
   tags:
   - CCE-80906-1
   - CJIS-5.5.6
-  - DISA-STIG-RHEL-08-010200
+  - DISA-STIG-RHEL-08-010201
   - NIST-800-171-3.1.11
   - NIST-800-53-AC-12
   - NIST-800-53-AC-17(a)
