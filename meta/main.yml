@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: rhel8_anssi_bp28_enhanced
+  namespace: redhatofficial
   author: ComplianceAsCode development team
   description: ANSSI-BP-028 (enhanced)
 
