@@ -45,13 +45,15 @@ sysctl_net_ipv4_conf_default_secure_redirects_value: '0'
 sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value: '1'
 sysctl_net_ipv4_tcp_rfc1337_value: '1'
 sysctl_net_ipv4_tcp_syncookies_value: '1'
+sysctl_kernel_kptr_restrict_value: '1'
 var_selinux_policy_name: targeted
+var_selinux_state: enforcing
 var_polyinstantiation_enabled: 'true'
 var_postfix_root_mail_alias: system.administrator@mail.mil
 var_postfix_inet_interfaces: loopback-only
 var_multiple_time_servers: 0.pool.ntp.org,1.pool.ntp.org,2.pool.ntp.org,3.pool.ntp.org
-sshd_idle_timeout_value: '600'
 var_sshd_set_keepalive: '0'
+sshd_idle_timeout_value: '600'
 accounts_maximum_age_login_defs: true
 accounts_password_minlen_login_defs: true
 accounts_password_pam_dcredit: true
@@ -140,6 +142,7 @@ rsyslog_remote_loghost: true
 sebool_polyinstantiation_enabled: true
 security_patches_up_to_date: true
 selinux_policytype: true
+selinux_state: true
 service_rsyslog_enabled: true
 skip_ansible_lint: true
 sshd_disable_root_login: true
