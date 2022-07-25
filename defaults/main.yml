@@ -161,6 +161,7 @@ sysctl_fs_protected_hardlinks: true
 sysctl_fs_protected_symlinks: true
 sysctl_fs_suid_dumpable: true
 sysctl_kernel_dmesg_restrict: true
+sysctl_kernel_exec_shield: true
 sysctl_kernel_kptr_restrict: true
 sysctl_kernel_modules_disabled: true
 sysctl_kernel_perf_cpu_time_max_percent: true
