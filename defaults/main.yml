@@ -58,6 +58,7 @@ DISA_STIG_RHEL_08_010010: true
 DISA_STIG_RHEL_08_010159: true
 DISA_STIG_RHEL_08_010170: true
 DISA_STIG_RHEL_08_010190: true
+DISA_STIG_RHEL_08_010200: true
 DISA_STIG_RHEL_08_010201: true
 DISA_STIG_RHEL_08_010359: true
 DISA_STIG_RHEL_08_010370: true
@@ -209,6 +210,7 @@ reboot_required: true
 restrict_strategy: true
 rsyslog_files_permissions: true
 rsyslog_remote_loghost: true
+rsyslog_remote_tls: true
 sebool_polyinstantiation_enabled: true
 security_patches_up_to_date: true
 selinux_policytype: true
