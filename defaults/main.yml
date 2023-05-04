@@ -13,7 +13,6 @@ var_password_pam_lcredit: '-1'
 var_password_pam_minlen: '18'
 var_password_pam_ocredit: '-1'
 var_password_pam_ucredit: '-1'
-var_logind_session_timeout: '600'
 var_accounts_maximum_age_login_defs: '90'
 var_password_pam_unix_rounds: '65536'
 var_accounts_tmout: '600'
@@ -166,7 +165,6 @@ file_permissions_etc_shadow: true
 file_permissions_sshd_private_key: true
 high_disruption: true
 high_severity: true
-logind_session_timeout: true
 low_complexity: true
 low_disruption: true
 low_severity: true
@@ -214,6 +212,8 @@ postfix_client_configure_mail_alias: true
 postfix_network_listening_disabled: true
 reboot_required: true
 restrict_strategy: true
+rsyslog_files_groupownership: true
+rsyslog_files_ownership: true
 rsyslog_files_permissions: true
 rsyslog_remote_loghost: true
 rsyslog_remote_tls: true
