@@ -752,6 +752,7 @@
   tags:
   - CCE-80795-8
   - CJIS-5.10.4.1
+  - DISA-STIG-RHEL-08-010019
   - NIST-800-171-3.4.8
   - NIST-800-53-CM-5(3)
   - NIST-800-53-CM-6(a)
@@ -766,6 +767,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
+  - DISA_STIG_RHEL_08_010019 | bool
   - ensure_redhat_gpgkey_installed | bool
   - high_severity | bool
   - medium_complexity | bool
@@ -781,6 +783,7 @@
   tags:
   - CCE-80795-8
   - CJIS-5.10.4.1
+  - DISA-STIG-RHEL-08-010019
   - NIST-800-171-3.4.8
   - NIST-800-53-CM-5(3)
   - NIST-800-53-CM-6(a)
@@ -795,6 +798,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
+  - DISA_STIG_RHEL_08_010019 | bool
   - ensure_redhat_gpgkey_installed | bool
   - high_severity | bool
   - medium_complexity | bool
@@ -810,6 +814,7 @@
   tags:
   - CCE-80795-8
   - CJIS-5.10.4.1
+  - DISA-STIG-RHEL-08-010019
   - NIST-800-171-3.4.8
   - NIST-800-53-CM-5(3)
   - NIST-800-53-CM-6(a)
@@ -824,6 +829,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
+  - DISA_STIG_RHEL_08_010019 | bool
   - ensure_redhat_gpgkey_installed | bool
   - high_severity | bool
   - medium_complexity | bool
@@ -837,6 +843,7 @@
   tags:
   - CCE-80795-8
   - CJIS-5.10.4.1
+  - DISA-STIG-RHEL-08-010019
   - NIST-800-171-3.4.8
   - NIST-800-53-CM-5(3)
   - NIST-800-53-CM-6(a)
@@ -851,6 +858,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
+  - DISA_STIG_RHEL_08_010019 | bool
   - ensure_redhat_gpgkey_installed | bool
   - high_severity | bool
   - medium_complexity | bool
@@ -863,6 +871,7 @@
     state: present
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
   when:
+  - DISA_STIG_RHEL_08_010019 | bool
   - ensure_redhat_gpgkey_installed | bool
   - high_severity | bool
   - medium_complexity | bool
@@ -876,6 +885,7 @@
   tags:
   - CCE-80795-8
   - CJIS-5.10.4.1
+  - DISA-STIG-RHEL-08-010019
   - NIST-800-171-3.4.8
   - NIST-800-53-CM-5(3)
   - NIST-800-53-CM-6(a)
@@ -2453,7 +2463,7 @@
     manager: auto
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2464,7 +2474,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2477,7 +2487,7 @@
     path: /usr/bin/authselect
   register: result_authselect_present
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2487,7 +2497,7 @@
   - '"pam" in ansible_facts.packages'
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2541,7 +2551,7 @@
     - result_authselect_enable_feature_cmd is not skipped
     - result_authselect_enable_feature_cmd is success
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2552,7 +2562,7 @@
   - result_authselect_present.stat.exists
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2607,7 +2617,7 @@
     when:
     - result_pam_faillock_is_enabled.found == 0
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2618,7 +2628,7 @@
   - not result_authselect_present.stat.exists
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2634,7 +2644,7 @@
     path: /etc/security/faillock.conf
   register: result_faillock_conf_check
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2644,7 +2654,7 @@
   - '"pam" in ansible_facts.packages'
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2662,7 +2672,7 @@
     line: even_deny_root
     state: present
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2673,7 +2683,7 @@
   - result_faillock_conf_check.stat.exists
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -2962,7 +2972,7 @@
     when:
     - result_pam_file_present.stat.exists
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -2973,7 +2983,7 @@
   - result_faillock_conf_check.stat.exists
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -3023,7 +3033,7 @@
     when:
     - result_pam_faillock_even_deny_root_parameter_is_present.found == 0
   when:
-  - DISA_STIG_RHEL_08_020022 | bool
+  - DISA_STIG_RHEL_08_020023 | bool
   - accounts_passwords_pam_faillock_deny_root | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3034,7 +3044,7 @@
   - not result_faillock_conf_check.stat.exists
   tags:
   - CCE-80668-7
-  - DISA-STIG-RHEL-08-020022
+  - DISA-STIG-RHEL-08-020023
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(c)
@@ -3051,6 +3061,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3061,6 +3072,7 @@
   - restrict_strategy
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3074,6 +3086,7 @@
   register: result_authselect_present
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3084,6 +3097,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3137,6 +3151,7 @@
     - result_authselect_enable_feature_cmd is success
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3148,6 +3163,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3202,6 +3218,7 @@
     - result_pam_faillock_is_enabled.found == 0
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3213,6 +3230,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3228,6 +3246,7 @@
   register: result_faillock_conf_check
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3238,6 +3257,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3255,6 +3275,7 @@
     state: present
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3266,6 +3287,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3552,6 +3574,7 @@
     - result_pam_file_present.stat.exists
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3563,6 +3586,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3637,6 +3661,7 @@
     - result_pam_faillock_fail_interval_parameter_is_present.found > 0
   when:
   - DISA_STIG_RHEL_08_020012 | bool
+  - DISA_STIG_RHEL_08_020013 | bool
   - accounts_passwords_pam_faillock_interval | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3648,6 +3673,7 @@
   tags:
   - CCE-80669-5
   - DISA-STIG-RHEL-08-020012
+  - DISA-STIG-RHEL-08-020013
   - NIST-800-53-AC-7(a)
   - NIST-800-53-CM-6(a)
   - accounts_passwords_pam_faillock_interval
@@ -3663,7 +3689,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -3676,7 +3702,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3689,7 +3715,7 @@
     path: /usr/bin/authselect
   register: result_authselect_present
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3700,7 +3726,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -3754,7 +3780,7 @@
     - result_authselect_enable_feature_cmd is not skipped
     - result_authselect_enable_feature_cmd is success
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3766,7 +3792,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -3823,7 +3849,7 @@
     when:
     - result_pam_faillock_is_enabled.found == 0
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3835,7 +3861,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -3853,7 +3879,7 @@
     path: /etc/security/faillock.conf
   register: result_faillock_conf_check
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3864,7 +3890,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -3884,7 +3910,7 @@
     line: unlock_time = {{ var_accounts_passwords_pam_faillock_unlock_time }}
     state: present
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -3896,7 +3922,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -4178,7 +4204,7 @@
     when:
     - result_pam_file_present.stat.exists
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -4190,7 +4216,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -4267,7 +4293,7 @@
     when:
     - result_pam_faillock_unlock_time_parameter_is_present.found > 0
   when:
-  - DISA_STIG_RHEL_08_020016 | bool
+  - DISA_STIG_RHEL_08_020015 | bool
   - accounts_passwords_pam_faillock_unlock_time | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -4279,7 +4305,7 @@
   tags:
   - CCE-80670-3
   - CJIS-5.5.3
-  - DISA-STIG-RHEL-08-020016
+  - DISA-STIG-RHEL-08-020015
   - NIST-800-171-3.1.8
   - NIST-800-53-AC-7(b)
   - NIST-800-53-CM-6(a)
@@ -4920,6 +4946,7 @@
   tags:
   - CCE-80652-1
   - CJIS-5.6.2.1
+  - DISA-STIG-RHEL-08-020231
   - NIST-800-171-3.5.7
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(1)(a)
@@ -4931,6 +4958,7 @@
   - no_reboot_needed
   - restrict_strategy
   when:
+  - DISA_STIG_RHEL_08_020231 | bool
   - accounts_password_minlen_login_defs | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -4946,6 +4974,7 @@
     line: PASS_MIN_LEN        {{ var_accounts_password_minlen_login_defs }}
     create: true
   when:
+  - DISA_STIG_RHEL_08_020231 | bool
   - accounts_password_minlen_login_defs | bool
   - low_complexity | bool
   - low_disruption | bool
@@ -4956,6 +4985,7 @@
   tags:
   - CCE-80652-1
   - CJIS-5.6.2.1
+  - DISA-STIG-RHEL-08-020231
   - NIST-800-171-3.5.7
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IA-5(1)(a)
@@ -28169,8 +28199,8 @@
   - reboot_required
   - sysctl_net_ipv4_ip_forward
 
-- name: Configure excluded (non local) file systems
-  set_fact:
+- name: Ensure All World-Writable Directories Are Owned by root User - Define Excluded (Non-Local) File Systems and Paths
+  ansible.builtin.set_fact:
     excluded_fstypes:
     - afs
     - ceph
@@ -28191,6 +28221,12 @@
     - lustre
     - davfs
     - fuse.sshfs
+    excluded_paths:
+    - dev
+    - proc
+    - run
+    - sys
+    search_paths: []
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -28209,9 +28245,15 @@
   - no_reboot_needed | bool
   - restrict_strategy | bool
 
-- name: Create empty list of excluded paths
-  set_fact:
-    excluded_paths: []
+- name: Ensure All World-Writable Directories Are Owned by root User - Find Relevant Root Directories Ignoring Pre-Defined
+    Excluded Paths
+  ansible.builtin.find:
+    paths: /
+    file_type: directory
+    excludes: '{{ excluded_paths }}'
+    hidden: true
+    recurse: false
+  register: result_relevant_root_dirs
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -28230,9 +28272,33 @@
   - no_reboot_needed | bool
   - restrict_strategy | bool
 
-- name: Detect nonlocal file systems and add them to excluded paths
-  set_fact:
-    excluded_paths: '{{ excluded_paths | union([item.mount]) }}'
+- name: Ensure All World-Writable Directories Are Owned by root User - Include Relevant Root Directories in a List of Paths
+    to be Searched
+  ansible.builtin.set_fact:
+    search_paths: '{{ search_paths | union([item.path]) }}'
+  loop: '{{ result_relevant_root_dirs.files }}'
+  tags:
+  - CCE-83375-6
+  - DISA-STIG-RHEL-08-010700
+  - dir_perms_world_writable_root_owned
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  when:
+  - DISA_STIG_RHEL_08_010700 | bool
+  - dir_perms_world_writable_root_owned | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+
+- name: Ensure All World-Writable Directories Are Owned by root User - Increment Search Paths List with Local Partitions Mount
+    Points
+  ansible.builtin.set_fact:
+    search_paths: '{{ search_paths | union([item.mount]) }}'
   loop: '{{ ansible_mounts }}'
   when:
   - DISA_STIG_RHEL_08_010700 | bool
@@ -28242,7 +28308,8 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - item.fstype in excluded_fstypes
+  - item.fstype not in excluded_fstypes
+  - item.mount != '/'
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -28253,14 +28320,33 @@
   - no_reboot_needed
   - restrict_strategy
 
-- name: Find all directories excluding non-local partitions
-  find:
-    paths: /
-    excludes: excluded_paths
-    file_type: directory
-    hidden: true
-    recurse: true
-  register: found_dirs
+- name: Ensure All World-Writable Directories Are Owned by root User - Increment Search Paths List with Local NFS File System
+    Targets
+  ansible.builtin.set_fact:
+    search_paths: '{{ search_paths | union([item.device.split('':'')[1]]) }}'
+  loop: '{{ ansible_mounts }}'
+  when:
+  - DISA_STIG_RHEL_08_010700 | bool
+  - dir_perms_world_writable_root_owned | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - item.device is search("localhost:")
+  tags:
+  - CCE-83375-6
+  - DISA-STIG-RHEL-08-010700
+  - dir_perms_world_writable_root_owned
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+
+- name: Ensure All World-Writable Directories Are Owned by root User - Define Rule Specific Facts
+  ansible.builtin.set_fact:
+    world_writable_dirs: []
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -28279,9 +28365,12 @@
   - no_reboot_needed | bool
   - restrict_strategy | bool
 
-- name: Create list of world writable directories
-  set_fact:
-    world_writable_dirs: '{{ found_dirs.files | selectattr(''woth'') | list }}'
+- name: Ensure All World-Writable Directories Are Owned by root User - Find All Uncompliant Directories in Local File Systems
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type d -perm -0002 -uid +0
+  loop: '{{ search_paths }}'
+  changed_when: false
+  register: result_found_dirs
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -28300,12 +28389,34 @@
   - no_reboot_needed | bool
   - restrict_strategy | bool
 
-- name: Change owner to root on directories which are world writable
-  file:
-    path: '{{ item.path }}'
+- name: Ensure All World-Writable Directories Are Owned by root User - Create List of World Writable Directories Not Owned
+    by root
+  ansible.builtin.set_fact:
+    world_writable_dirs: '{{ world_writable_dirs | union(item.stdout_lines) | list }}'
+  loop: '{{ result_found_dirs.results }}'
+  tags:
+  - CCE-83375-6
+  - DISA-STIG-RHEL-08-010700
+  - dir_perms_world_writable_root_owned
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  when:
+  - DISA_STIG_RHEL_08_010700 | bool
+  - dir_perms_world_writable_root_owned | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+
+- name: Ensure All World-Writable Directories Are Owned by root User - Ensure root Ownership on Local World Writable Directories
+  ansible.builtin.file:
+    path: '{{ item }}'
     owner: root
   loop: '{{ world_writable_dirs }}'
-  ignore_errors: true
   tags:
   - CCE-83375-6
   - DISA-STIG-RHEL-08-010700
@@ -29284,7 +29395,8 @@
   - medium_severity | bool
   - mount_option_home_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/home" in ansible_mounts
+    | map(attribute="mount") | list )
   tags:
   - CCE-81050-7
   - DISA-STIG-RHEL-08-010570
@@ -29315,7 +29427,8 @@
   - medium_severity | bool
   - mount_option_home_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/home" in ansible_mounts
+    | map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -29354,7 +29467,8 @@
   - medium_severity | bool
   - mount_option_home_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/home" in ansible_mounts
+    | map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -29384,7 +29498,8 @@
   - medium_severity | bool
   - mount_option_home_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/home" in ansible_mounts
+    | map(attribute="mount") | list )
   - mount_info is defined and "nosuid" not in mount_info.options
   tags:
   - CCE-81050-7
@@ -29417,7 +29532,8 @@
   - medium_severity | bool
   - mount_option_home_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/home" in ansible_mounts
+    | map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-81050-7
@@ -29483,7 +29599,8 @@
   - medium_severity | bool
   - mount_option_opt_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/opt" in ansible_mounts |
+    map(attribute="mount") | list )
   tags:
   - CCE-83319-4
   - configure_strategy
@@ -29506,7 +29623,8 @@
   - medium_severity | bool
   - mount_option_opt_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/opt" in ansible_mounts |
+    map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -29537,7 +29655,8 @@
   - medium_severity | bool
   - mount_option_opt_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/opt" in ansible_mounts |
+    map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -29559,7 +29678,8 @@
   - medium_severity | bool
   - mount_option_opt_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/opt" in ansible_mounts |
+    map(attribute="mount") | list )
   - mount_info is defined and "nosuid" not in mount_info.options
   tags:
   - CCE-83319-4
@@ -29584,7 +29704,8 @@
   - medium_severity | bool
   - mount_option_opt_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/opt" in ansible_mounts |
+    map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-83319-4
@@ -29607,7 +29728,8 @@
   - medium_severity | bool
   - mount_option_srv_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/srv" in ansible_mounts |
+    map(attribute="mount") | list )
   tags:
   - CCE-83322-8
   - configure_strategy
@@ -29630,7 +29752,8 @@
   - medium_severity | bool
   - mount_option_srv_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/srv" in ansible_mounts |
+    map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -29661,7 +29784,8 @@
   - medium_severity | bool
   - mount_option_srv_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/srv" in ansible_mounts |
+    map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -29683,7 +29807,8 @@
   - medium_severity | bool
   - mount_option_srv_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/srv" in ansible_mounts |
+    map(attribute="mount") | list )
   - mount_info is defined and "nosuid" not in mount_info.options
   tags:
   - CCE-83322-8
@@ -29708,7 +29833,8 @@
   - medium_severity | bool
   - mount_option_srv_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/srv" in ansible_mounts |
+    map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-83322-8
@@ -30070,7 +30196,8 @@
   - medium_severity | bool
   - mount_option_var_log_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   tags:
   - CCE-82008-4
   - DISA-STIG-RHEL-08-040128
@@ -30101,7 +30228,8 @@
   - medium_severity | bool
   - mount_option_var_log_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -30140,7 +30268,8 @@
   - medium_severity | bool
   - mount_option_var_log_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -30170,7 +30299,8 @@
   - medium_severity | bool
   - mount_option_var_log_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - mount_info is defined and "noexec" not in mount_info.options
   tags:
   - CCE-82008-4
@@ -30203,7 +30333,8 @@
   - medium_severity | bool
   - mount_option_var_log_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-82008-4
@@ -30234,7 +30365,8 @@
   - medium_severity | bool
   - mount_option_var_log_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   tags:
   - CCE-82065-4
   - DISA-STIG-RHEL-08-040127
@@ -30265,7 +30397,8 @@
   - medium_severity | bool
   - mount_option_var_log_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -30304,7 +30437,8 @@
   - medium_severity | bool
   - mount_option_var_log_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -30334,7 +30468,8 @@
   - medium_severity | bool
   - mount_option_var_log_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - mount_info is defined and "nosuid" not in mount_info.options
   tags:
   - CCE-82065-4
@@ -30367,7 +30502,8 @@
   - medium_severity | bool
   - mount_option_var_log_nosuid | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var/log" in ansible_mounts
+    | map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-82065-4
@@ -30397,7 +30533,8 @@
   - medium_severity | bool
   - mount_option_var_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var" in ansible_mounts |
+    map(attribute="mount") | list )
   tags:
   - CCE-83330-1
   - configure_strategy
@@ -30420,7 +30557,8 @@
   - medium_severity | bool
   - mount_option_var_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var" in ansible_mounts |
+    map(attribute="mount") | list )
   - device_name.stdout is defined and device_name.stdout_lines is defined
   - (device_name.stdout | length > 0)
   tags:
@@ -30451,7 +30589,8 @@
   - medium_severity | bool
   - mount_option_var_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var" in ansible_mounts |
+    map(attribute="mount") | list )
   - ("--fstab" | length == 0)
   - (device_name.stdout | length == 0)
   tags:
@@ -30473,7 +30612,8 @@
   - medium_severity | bool
   - mount_option_var_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var" in ansible_mounts |
+    map(attribute="mount") | list )
   - mount_info is defined and "noexec" not in mount_info.options
   tags:
   - CCE-83330-1
@@ -30498,7 +30638,8 @@
   - medium_severity | bool
   - mount_option_var_noexec | bool
   - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ( ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"] and "/var" in ansible_mounts |
+    map(attribute="mount") | list )
   - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("--fstab" | length == 0)
   tags:
   - CCE-83330-1
@@ -32567,6 +32708,117 @@
   - medium_severity
   - no_reboot_needed
   - package_chrony_installed
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
+  - CCE-80874-1
+  - NIST-800-171-3.3.7
+  - NIST-800-53-AU-12(1)
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.1
+  - PCI-DSSv4-10.6.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_chronyd_or_ntpd_enabled
+  when:
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_chronyd_or_ntpd_enabled | bool
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  when:
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_chronyd_or_ntpd_enabled | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80874-1
+  - NIST-800-171-3.3.7
+  - NIST-800-53-AU-12(1)
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.1
+  - PCI-DSSv4-10.6.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_chronyd_or_ntpd_enabled
+
+- name: Start ntpd service if ntp installed
+  systemd:
+    name: ntpd
+    enabled: 'yes'
+    state: started
+    masked: 'no'
+  when:
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_chronyd_or_ntpd_enabled | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - '''ntp'' in ansible_facts.packages'
+  tags:
+  - CCE-80874-1
+  - NIST-800-171-3.3.7
+  - NIST-800-53-AU-12(1)
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.1
+  - PCI-DSSv4-10.6.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_chronyd_or_ntpd_enabled
+
+- name: Start chronyd service if chrony or chronyd installed
+  systemd:
+    name: chronyd
+    enabled: 'yes'
+    state: started
+    masked: 'no'
+  when:
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_chronyd_or_ntpd_enabled | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ('chrony' in ansible_facts.packages) or ('chronyd' in ansible_facts.packages)
+  tags:
+  - CCE-80874-1
+  - NIST-800-171-3.3.7
+  - NIST-800-53-AU-12(1)
+  - NIST-800-53-AU-8(1)(a)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-10.4.1
+  - PCI-DSSv4-10.6.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_chronyd_or_ntpd_enabled
 
 - name: Gather the package facts
   package_facts:
