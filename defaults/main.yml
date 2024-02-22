@@ -57,7 +57,7 @@ var_slub_debug_options: FZP
 var_selinux_policy_name: targeted
 var_selinux_state: enforcing
 var_polyinstantiation_enabled: 'true'
-var_postfix_root_mail_alias: system.administrator@mail.mil
+var_postfix_root_mail_alias: change_me@localhost
 var_postfix_inet_interfaces: loopback-only
 var_multiple_time_servers: 0.pool.ntp.org,1.pool.ntp.org,2.pool.ntp.org,3.pool.ntp.org
 var_sshd_set_keepalive: '0'
