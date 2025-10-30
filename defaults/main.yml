@@ -73,14 +73,12 @@ DISA_STIG_RHEL_08_010300: true
 DISA_STIG_RHEL_08_010310: true
 DISA_STIG_RHEL_08_010320: true
 DISA_STIG_RHEL_08_010359: true
-DISA_STIG_RHEL_08_010370: true
 DISA_STIG_RHEL_08_010371: true
 DISA_STIG_RHEL_08_010373: true
 DISA_STIG_RHEL_08_010374: true
 DISA_STIG_RHEL_08_010375: true
 DISA_STIG_RHEL_08_010376: true
 DISA_STIG_RHEL_08_010421: true
-DISA_STIG_RHEL_08_010423: true
 DISA_STIG_RHEL_08_010430: true
 DISA_STIG_RHEL_08_010450: true
 DISA_STIG_RHEL_08_010480: true
@@ -158,6 +156,7 @@ DISA_STIG_RHEL_08_040282: true
 DISA_STIG_RHEL_08_040283: true
 DISA_STIG_RHEL_08_040285: true
 DISA_STIG_RHEL_08_040286: true
+DISA_STIG_needed_rules: true
 accounts_password_minlen_login_defs: true
 accounts_password_pam_dcredit: true
 accounts_password_pam_lcredit: true
@@ -402,6 +401,7 @@ service_auditd_enabled: true
 service_chronyd_or_ntpd_enabled: true
 service_sssd_enabled: true
 set_password_hashing_algorithm_systemauth: true
+special_service_block: true
 sshd_disable_root_login: true
 sssd_enable_pam_services: true
 sssd_ldap_configure_tls_reqcert: true
