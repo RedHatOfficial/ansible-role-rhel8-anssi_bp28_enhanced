@@ -30,4 +30,8 @@ galaxy_info:
   - anssi
 
 
+collections:
+  - community.general
+  - ansible.posix
+
 dependencies: []
