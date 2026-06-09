@@ -254,7 +254,7 @@
   - no_reboot_needed
   - package_chrony_installed
 
-- name: 'Uninstall xinetd Package: Ensure xinetd is removed'
+- name: 'Uninstall xinetd package if not used by network services: Ensure xinetd is removed'
   ansible.builtin.package:
     name: xinetd
     state: absent
@@ -6803,6 +6803,43 @@
   - no_reboot_needed
   - set_password_hashing_algorithm_systemauth
 
+- name: Remove StopIdleSessionSec from main config
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: ^\s*StopIdleSessionSec\s*=
+    state: absent
+  when:
+  - DISA_STIG_RHEL_08_020035 | bool
+  - logind_session_timeout | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - restrict_strategy | bool
+  - '"kernel-core" in ansible_facts.packages'
+  - ( ansible_distribution == 'RedHat' and ansible_distribution_version is version('8.7', '>=') and ansible_distribution ==
+    'RedHat' and ansible_distribution_version is version('9.0', '!=') ) or ansible_distribution == 'OracleLinux' and ansible_distribution_version
+    is version('8.7', '>=') or ansible_distribution == 'SLES' and ansible_distribution_version is version('15', '>=')
+  tags:
+  - CCE-90784-0
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-08-020035
+  - NIST-800-171-3.1.11
+  - NIST-800-53-AC-12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-2(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-SC-10
+  - PCI-DSS-Req-8.1.8
+  - logind_session_timeout
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - reboot_required
+  - restrict_strategy
+
 - name: Set 'StopIdleSessionSec' to '{{ var_logind_session_timeout }}' in the [Login] section of '/etc/systemd/logind.conf'
   community.general.ini_file:
     path: /etc/systemd/logind.conf
@@ -8187,7 +8224,6 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   - '"bash" in ansible_facts.packages'
   tags:
   - CCE-81036-6
@@ -8212,7 +8248,6 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   - '"bash" in ansible_facts.packages'
   - umask_replace.found > 0
   tags:
@@ -8238,7 +8273,6 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   - '"bash" in ansible_facts.packages'
   - umask_replace.found == 0
   tags:
@@ -8268,8 +8302,7 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
-  - '"shadow-utils" in ansible_facts.packages'
+  - ( "shadow-utils" in ansible_facts.packages and "kernel-core" in ansible_facts.packages )
   tags:
   - CCE-82888-9
   - DISA-STIG-RHEL-08-020351
@@ -8295,8 +8328,7 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
-  - '"shadow-utils" in ansible_facts.packages'
+  - ( "shadow-utils" in ansible_facts.packages and "kernel-core" in ansible_facts.packages )
   - result_umask_is_set.found > 0
   tags:
   - CCE-82888-9
@@ -8323,8 +8355,7 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
-  - '"shadow-utils" in ansible_facts.packages'
+  - ( "shadow-utils" in ansible_facts.packages and "kernel-core" in ansible_facts.packages )
   - result_umask_is_set.found == 0
   tags:
   - CCE-82888-9
@@ -8347,14 +8378,6 @@
     - '*.sh'
     contains: ^[\s]*umask\s+\d+
   register: result_profile_d_files
-  when:
-  - accounts_umask_etc_profile | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   tags:
   - CCE-81035-8
   - NIST-800-53-AC-6(1)
@@ -8365,6 +8388,13 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
+  when:
+  - accounts_umask_etc_profile | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
 
 - name: Ensure the Default Umask is Set Correctly in /etc/profile - Replace Existing umask Value in Files From /etc/profile.d
   ansible.builtin.replace:
@@ -8380,7 +8410,6 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   - result_profile_d_files.matched
   tags:
   - CCE-81035-8
@@ -8407,7 +8436,6 @@
   - medium_severity | bool
   - no_reboot_needed | bool
   - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   - not result_profile_d_files.matched
   tags:
   - CCE-81035-8
@@ -8427,14 +8455,6 @@
     regexp: ^(\s*)umask\s+\d+
     replace: \1umask {{ var_accounts_user_umask }}
   register: result_umask_replaced_profile
-  when:
-  - accounts_umask_etc_profile | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - '"kernel-core" in ansible_facts.packages'
   tags:
   - CCE-81035-8
   - NIST-800-53-AC-6(1)
@@ -8445,6 +8465,13 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
+  when:
+  - accounts_umask_etc_profile | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
 
 - name: Check if iommu argument is already present in /etc/default/grub
   ansible.builtin.slurp:
@@ -22013,7 +22040,6 @@
     - lustre
     - davfs
     - fuse.sshfs
-    - vfat
   when:
   - DISA_STIG_RHEL_08_010580 | bool
   - configure_strategy | bool
@@ -22083,11 +22109,10 @@
   - mount_option_nodev_nonroot_local_partitions
   - no_reboot_needed
 
-- name: 'Add nodev Option to Non-Root Local Partitions: Ensure non-root local partitions are present with nodev option in
-    /etc/fstab'
+- name: 'Add nodev Option to Non-Root Local Partitions: Ensure nodev option in /etc/fstab for non-root local partitions'
   ansible.builtin.replace:
     path: /etc/fstab
-    regexp: ^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/(?!boot|efi)\w\S*)\s+(?!vfat\s)(\S+)\s+(?!.*\bnodev\b)(\S+)(.*)$
+    regexp: ^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/(?!boot|efi)\w\S*)\s+(\S+)\s+(?!.*\bnodev\b)(\S+)(.*)$
     replace: \1 \2 \3 \4,nodev \5
   when:
   - DISA_STIG_RHEL_08_010580 | bool
@@ -25725,8 +25750,7 @@
 
 - name: Restrict Exposed Kernel Pointer Addresses Access - Find all files that set kernel.kptr_restrict to correct value
   ansible.builtin.shell:
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.kptr_restrict\s*=\s*{{
-      sysctl_kernel_kptr_restrict_value }}$'
+    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.kptr_restrict\s*=\s*1$'
   register: find_correct_value
   check_mode: false
   changed_when: false
@@ -25816,10 +25840,10 @@
   - reboot_required
   - sysctl_kernel_kptr_restrict
 
-- name: Restrict Exposed Kernel Pointer Addresses Access - Ensure sysctl kernel.kptr_restrict is set
+- name: Restrict Exposed Kernel Pointer Addresses Access - Ensure sysctl kernel.kptr_restrict is set to 1
   ansible.posix.sysctl:
     name: kernel.kptr_restrict
-    value: '{{ sysctl_kernel_kptr_restrict_value }}'
+    value: '1'
     sysctl_file: /etc/sysctl.d/kernel_kptr_restrict.conf
     state: present
     reload: true
@@ -26820,13 +26844,30 @@
   - postfix_client_configure_mail_alias
 
 - name: Make changes to Postfix configuration file
-  ansible.builtin.lineinfile:
-    path: /etc/postfix/main.cf
-    create: false
-    regexp: (?i)^inet_interfaces\s*=\s.*
-    line: inet_interfaces = {{ var_postfix_inet_interfaces }}
-    state: present
-    insertafter: ^inet_interfaces\s*=\s.*
+  block:
+  - name: Check for duplicate values
+    ansible.builtin.lineinfile:
+      path: /etc/postfix/main.cf
+      create: false
+      regexp: (?i)^inet_interfaces\s*=\s*.*$
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/postfix/main.cf
+    ansible.builtin.lineinfile:
+      path: /etc/postfix/main.cf
+      create: false
+      regexp: (?i)^inet_interfaces\s*=\s*.*$
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/postfix/main.cf
+    ansible.builtin.lineinfile:
+      path: /etc/postfix/main.cf
+      create: false
+      regexp: (?i)^inet_interfaces\s*=\s*.*$
+      line: inet_interfaces = {{ var_postfix_inet_interfaces }}
+      state: present
   when:
   - low_complexity | bool
   - low_disruption | bool
@@ -26835,7 +26876,6 @@
   - postfix_network_listening_disabled | bool
   - restrict_strategy | bool
   - '"kernel-core" in ansible_facts.packages'
-  - '"postfix" in ansible_facts.packages'
   - '"postfix" in ansible_facts.packages'
   tags:
   - CCE-82174-4
