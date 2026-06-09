@@ -56,7 +56,6 @@ sysctl_net_ipv4_conf_default_shared_media_value: '0'
 sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value: '1'
 sysctl_net_ipv4_tcp_rfc1337_value: '1'
 sysctl_net_ipv4_tcp_syncookies_value: '1'
-sysctl_kernel_kptr_restrict_value: '2'
 var_slub_debug_options: FZP
 var_selinux_policy_name: targeted
 var_selinux_state: enforcing
