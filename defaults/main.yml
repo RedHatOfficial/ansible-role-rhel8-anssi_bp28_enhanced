@@ -107,6 +107,7 @@ DISA_STIG_RHEL_08_020231: true
 DISA_STIG_RHEL_08_020280: true
 DISA_STIG_RHEL_08_020351: true
 DISA_STIG_RHEL_08_020353: true
+DISA_STIG_RHEL_08_020360: true
 DISA_STIG_RHEL_08_030121: true
 DISA_STIG_RHEL_08_030130: true
 DISA_STIG_RHEL_08_030140: true
@@ -155,6 +156,7 @@ DISA_STIG_RHEL_08_040282: true
 DISA_STIG_RHEL_08_040283: true
 DISA_STIG_RHEL_08_040285: true
 DISA_STIG_RHEL_08_040286: true
+DISA_STIG_RHEL_08_040287: true
 DISA_STIG_needed_rules: true
 accounts_password_minlen_login_defs: true
 accounts_password_pam_dcredit: true
@@ -388,6 +390,7 @@ postfix_client_configure_mail_alias: true
 postfix_network_listening_disabled: true
 reboot_required: true
 restrict_strategy: true
+rsyslog_filecreatemode: true
 rsyslog_files_groupownership: true
 rsyslog_files_ownership: true
 rsyslog_files_permissions: true
